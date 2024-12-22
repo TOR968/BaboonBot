@@ -10,6 +10,8 @@
 | ✅  | User-Agent rotation         |
 | ✅  | Scheduled runs              |
 
+## For suggestions or to report a bug, please contact [telegram](https://t.me/tor_dev)
+
 ## Installation
 
 1. Clone the repository:
