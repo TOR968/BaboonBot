@@ -1,0 +1,10 @@
+{
+    "processBatteryTaps": false,
+    "processQuests": true,
+    "processDailyCombo": true,
+    "combo": {
+        "battery1": 9.244791666666668,
+        "battery2": 36.865234375,
+        "battery3": 99.658203125
+    }
+}
