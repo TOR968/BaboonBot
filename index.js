@@ -61,7 +61,6 @@ class BaboonGameBot {
             console.log(`${colors.green}User info received${colors.reset}`);
             const dailyUser = userResponse?.data.user.hiGame.dailyUser;
             const questList = userResponse?.data.quests;
-            const maxCapacity = userResponse?.data.user.hiGame.battery.maxCapacity;
 
             await this.dailyReward(dailyUser, axiosInstance, tgInitData, utcDate);
 
@@ -70,12 +69,16 @@ class BaboonGameBot {
             }
 
             if (this.config.processBatteryTaps) {
-                await this.processBatteryTaps(maxCapacity, tgInitData, axiosInstance);
+                await this.processBatteryTaps(userResponse, tgInitData, axiosInstance);
             }
 
-            if (this.config.processBatteryTaps) {
+            if (this.config.processQuests) {
                 await this.processQuests(questList, tgInitData, axiosInstance);
             }
+
+            // if (this.config.buyBattery) {
+            //     await this.buyBattery(axiosInstance, tgInitData);
+            // }
 
             console.log(
                 `${colors.magenta}User session ${userResponse?.data.user.info.nickname} processed ${colors.reset}`
@@ -112,21 +115,40 @@ class BaboonGameBot {
         }
     }
 
-    async processBatteryTaps(maxCapacity, tgInitData, axiosInstance) {
-        // Play the game - charge battery
-        // console.log(`${colors.blue}Charging battery with ${tapsNumber} taps...${colors.reset}`);
-        // await axiosInstance.post(`${this.baseUrl}/game/chargeBattery?tgInitData=${tgInitData}`, {
-        //     tapsNumber: 135,
-        // });
-        // console.log(`${colors.green}Battery charged${colors.reset}`);
+    async processBatteryTaps(userResponse, tgInitData, axiosInstance) {
+        const maxCapacity = userResponse?.data.user.hiGame.battery.maxCapacity;
+        const capacityX = userResponse?.data.user.hiGame.batteryCapacityBoost.capacityX;
+        const fullChargeNumber = userResponse?.data.user.hiGame.fingersNumToFullCharge;
 
-        // Process battery taps
+        // if (fullChargeNumber != 0) {
+        console.log(`${colors.blue}Charging battery with ${fullChargeNumber} taps...${colors.reset}`);
+        await axiosInstance.post(`${this.baseUrl}/game/chargeBattery?tgInitData=${tgInitData}`, {
+            tapsNumber: fullChargeNumber,
+        });
+        console.log(`${colors.green}Battery charged${colors.reset}`);
+        // } else {
         console.log(`${colors.blue}Processing battery taps...${colors.reset}`);
         await axiosInstance.post(`${this.baseUrl}/game/batteryTaps?tgInitData=${tgInitData}`, {
-            tapsNumber: maxCapacity,
+            tapsNumber: maxCapacity * capacityX,
         });
         await this.sleep(this.getRandomNumber(1000, 5000));
         console.log(`${colors.green}Battery taps processed${colors.reset}`);
+        // }
+
+        // Process repair battery
+        // console.log(`${colors.blue}Processing repair battery...${colors.reset}`);
+        // const repairBattery = await axiosInstance.post(`${this.baseUrl}/game/repairFingers?tgInitData=${tgInitData}`, {
+        //     fingersToRepair: 1000,
+        //     price: 100,
+        // });
+
+        // if (repairBattery.data) {
+        //     console.log(`${colors.green}Repair battery processed${colors.reset}`);
+        // } else {
+        //     console.log(`${colors.yellow}Repair battery not processed${colors.reset}`);
+        // }
+
+        await this.sleep(this.getRandomNumber(1000, 5000));
     }
 
     async processQuests(questList, tgInitData, axiosInstance) {
@@ -153,7 +175,7 @@ class BaboonGameBot {
 
             await this.sleep(this.getRandomNumber(1000, 5000));
 
-            if (questValidation.data === true) {
+            if (questValidation.data) {
                 console.log(`${colors.blue}Claiming quest reward ${quest.title}...${colors.reset}`);
 
                 const questClaim = await axiosInstance.post(`${this.baseUrl}/quests/claim?tgInitData=${tgInitData}`, {
@@ -162,7 +184,7 @@ class BaboonGameBot {
 
                 await this.sleep(this.getRandomNumber(1000, 5000));
 
-                if (questClaim.data === true) {
+                if (questClaim.data) {
                     console.log(`${colors.green}Quest reward claimed${colors.reset}`);
                 } else {
                     console.log(`${colors.yellow}Quest reward not claimed${colors.reset}`);
@@ -170,6 +192,25 @@ class BaboonGameBot {
             }
         }
     }
+
+    // async buyBattery(axiosInstance, tgInitData) {
+    //     console.log(`${colors.blue}Buying battery...${colors.reset}`);
+    //     const userResponse = await axiosInstance.get(`${this.baseUrl}/user?tgInitData=${tgInitData}`);
+    //     const boonAmount = userResponse?.data.user.balance.lastBoonAmount;
+    //     const currentBatteryLevel = userResponse?.data.user.hiGame.battery.level;
+
+    //     if (boonAmount < 1000) {
+    //         const buyBattery = await axiosInstance.post(`${this.baseUrl}/game/buyBattery?tgInitData=${tgInitData}`, {
+    //             batteryLevel: currentBatteryLevel + 1,
+    //         });
+
+    //         if (buyBattery.data) {
+    //             console.log(`${colors.green}Battery bought${colors.reset}`);
+    //         } else {
+    //             console.log(`${colors.yellow}Battery not bought${colors.reset}`);
+    //         }
+    //     }
+    // }
 
     async start() {
         console.log(`${colors.magenta}Starting Baboon Game Bot${colors.reset}`);
