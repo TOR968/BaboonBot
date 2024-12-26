@@ -41,10 +41,9 @@
 5. Adjust settings in `config.json`:
     ```json
     {
-        "processBatteryTaps": false, // true/false Enable or disable the execution of battety taps will click until 
-                                    // the battery health value is 0 when “repairBattery” is set to : false;
-        "repairBattery": false, // true/false Enable or disable the execution of repair the battery will spin without
-                                // stopping until you stop the execution;
+        "processBatteryTaps": false, // true/false Enable or disable the execution of battety taps
+        "maxCyclesPerSession": 2, // number of cycles of the battery state from 100% health to 0%, after which it 
+                                 // is repaired and restarted
         "processQuests": true, // true/false Enable or disable the execution of tasks;
         "processDailyCombo": true, // true/false Enable or disable the execution of daily combo;
         "combo": { // Example of daily combo values in % / Must be changed daily;

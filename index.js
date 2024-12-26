@@ -118,9 +118,14 @@ class BaboonGameBot {
         const capacityX = userResponse?.data.user.hiGame.batteryCapacityBoost.capacityX;
         let lastBoonAmount = userResponse?.data.user.balance.lastBoonAmount;
         let fullChargeNumber = userResponse?.data.user.hiGame.fingersNumToFullCharge;
+        let maxCyclesPerSession = this.config.maxCyclesPerSession;
 
-        while (fullChargeNumber < 1020) {
-            const tapsNumber = fullChargeNumber + this.getRandomNumber(2, 15);
+        if (fullChargeNumber === 1020 && lastBoonAmount >= 100) {
+            await this.repairBattery(axiosInstance, tgInitData);
+        }
+
+        while (fullChargeNumber <= 1020 && maxCyclesPerSession >= 0) {
+            const tapsNumber = fullChargeNumber + this.getRandomNumber(5, 20);
             console.log(`${colors.blue}Charging battery with ${tapsNumber} taps...${colors.reset}`);
 
             const chargeBattery = await axiosInstance.post(
@@ -135,7 +140,7 @@ class BaboonGameBot {
             console.log(`${colors.green}Battery charged${colors.reset}`);
             await this.sleep(this.getRandomNumber(1000, 5000));
 
-            const taps = maxCapacity * capacityX + this.getRandomNumber(2, 15);
+            const taps = maxCapacity * capacityX + this.getRandomNumber(5, 20);
             console.log(`${colors.blue}Processing battery ${taps} taps...${colors.reset}`);
             await axiosInstance.post(`${this.baseUrl}/game/batteryTaps?tgInitData=${tgInitData}`, {
                 tapsNumber: taps,
@@ -143,9 +148,12 @@ class BaboonGameBot {
             console.log(`${colors.green}Battery taps processed${colors.reset}`);
             await this.sleep(this.getRandomNumber(1000, 5000));
 
-            if (fullChargeNumber === 1020 && lastBoonAmount >= 100 && this.config.repairBattery) {
+            if (fullChargeNumber === 1020 && lastBoonAmount >= 100) {
                 await this.repairBattery(axiosInstance, tgInitData);
                 fullChargeNumber = 52;
+
+                console.log(`${colors.red}Cycles left in this session: ${maxCyclesPerSession}${colors.reset}`);
+                maxCyclesPerSession--;
             }
         }
     }
