@@ -1,10 +1,11 @@
 {
-    "processBatteryTaps": false,
+    "processBatteryTaps": true,
+    "repairBattery": false,
     "processQuests": true,
     "processDailyCombo": true,
     "combo": {
-        "battery1": 92,
+        "battery1": 75,
         "battery2": 45,
-        "battery3": 15
+        "battery3": 20
     }
 }

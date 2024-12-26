@@ -6,7 +6,7 @@
 | ✅  | Multiple account support    |
 | ✅  | Proxy support (SOCKS/HTTP)  |
 | ✅  | Quest automation            |
-| ❔  | Battery management          |
+| ✅  | Battery management          |
 | ✅  | User-Agent rotation         |
 | ✅  | Scheduled runs              |
 
@@ -41,13 +41,16 @@
 5. Adjust settings in `config.json`:
     ```json
     {
-        "processBatteryTaps": false, // Not working yet
-        "processQuests": true, // true/false Enable or disable the execution of tasks
-        "processDailyCombo": true, // true/false Enable or disable the execution of daily combo
-        "combo": { // Example of daily combo values in % / Must be changed daily
-            "battery1": 9.244791666666668, // 1-100
-            "battery2": 36.865234375, // 1-100
-            "battery3": 99.658203125 // 1-100
+        "processBatteryTaps": false, // true/false Enable or disable the execution of battety taps will click until 
+                                    // the battery health value is 0 when “repairBattery” is set to : false;
+        "repairBattery": false, // true/false Enable or disable the execution of repair the battery will spin without
+                                // stopping until you stop the execution;
+        "processQuests": true, // true/false Enable or disable the execution of tasks;
+        "processDailyCombo": true, // true/false Enable or disable the execution of daily combo;
+        "combo": { // Example of daily combo values in % / Must be changed daily;
+            "battery1": 9.244791666666668, // 1-100;
+            "battery2": 36.865234375, // 1-100;
+            "battery3": 99.658203125 // 1-100;
         }
     }
     ```
