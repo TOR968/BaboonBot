@@ -1,6 +1,6 @@
 {
     "processBatteryTaps": true,
-    "repairBattery": false,
+    "maxCyclesPerSession": 2,
     "processQuests": true,
     "processDailyCombo": true,
     "combo": {
