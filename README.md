@@ -16,7 +16,7 @@
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/BaboonBot.git
+    git clone https://github.com/TOR968/BaboonBot.git
     cd BaboonBot
     ```
 
@@ -41,7 +41,7 @@
 5. Adjust settings in `config.json`:
     ```json
     {
-        "processBatteryTaps": false, // true/false Enable or disable the execution of battety taps
+        "processBatteryTaps": false, // true/false Enable or disable the execution of battery taps
         "maxCyclesPerSession": 2, // number of cycles of the battery state from 100% health to 0%, after which it 
                                  // is repaired and restarted
         "processQuests": true, // true/false Enable or disable the execution of tasks;
