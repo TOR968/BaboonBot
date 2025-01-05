@@ -59,9 +59,8 @@
 1. Open the game in Telegram or Browser
 2. Open Developer Tools (F12)
 3. Go to Network tab
-4. Find a request to the game server
-5. Look for the `tgWabAppData` parameter in the URL
-6. Copy the entire value and paste it in `data.txt`
+4. Look for the `tgWabAppData` parameter
+5. Copy the entire value and paste it in `data.txt`
 
 ![How to get tgInitData](./img/initParams.png)
 
