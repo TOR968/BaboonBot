@@ -19,8 +19,16 @@ const colors = {
 class BaboonGameBot {
     constructor() {
         this.config = JSON.parse(fs.readFileSync("./config.json", "utf-8"));
-        this.tgInitDataList = fs.readFileSync("data.txt", "utf8").split("\n").filter(Boolean);
-        this.proxyList = fs.readFileSync("proxy.txt", "utf8").split("\n").filter(Boolean);
+        this.tgInitDataList = fs
+            .readFileSync("data.txt", "utf8")
+            .split("\n")
+            .map((line) => line.trim())
+            .filter((line) => line);
+        this.proxyList = fs
+            .readFileSync("proxy.txt", "utf8")
+            .split("\n")
+            .map((line) => line.trim())
+            .filter((line) => line);
         this.baseUrl = "https://baboon-telegram.onrender.com";
     }
 
