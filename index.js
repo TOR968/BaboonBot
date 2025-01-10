@@ -35,6 +35,7 @@ class BaboonGameBot {
     createAxiosInstance(queryId, userAgent = null) {
         const proxyIndex = this.tgInitDataList.findIndex((data) => data.includes(queryId));
         const proxy = this.proxyList[proxyIndex];
+        console.log(`${colors.cyan}Using proxy: ${proxy}${colors.reset}`);
 
         const config = {
             headers: {
